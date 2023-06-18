@@ -70,7 +70,58 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(
+  git
+  rails
+  ruby
+  chruby
+  sublime
+  sublime-merge
+  bundler
+  colorize
+  vi-mode
+  colored-man-pages
+  docker
+  docker-compose
+  fzf
+  heroku
+  httpie
+  man
+  tmux
+  yarn
+  nvm
+  terraform
+)
+
+export MODE_INDICATOR="%F{white}+%f"
+export INSERT_MODE_INDICATOR="%F{yellow}+%f"
+
+# fbr - checkout git branch (including remote branches), sorted by most recent commit, limit 30 last branches
+fbr() {
+  local branches branch
+  branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+# fbr - checkout git branch (including remote branches)
+rfbr() {
+  local branches branch
+  branches=$(git branch --all | grep -v HEAD) &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+# fd - cd to selected directory
+fd() {
+  local dir
+  dir=$(find ${1:-.} -path '*/\.*' -prune \
+                  -o -type d -print 2> /dev/null | fzf +m) &&
+  cd "$dir"
+}
+
 
 source $ZSH/oh-my-zsh.sh
 
@@ -96,6 +147,29 @@ export EDITOR='vim'
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+alias bes="bundle exec spring"
+alias gpudt="git pull upstream develop --tags"
+alias gpud="git pull upstream develop"
+alias setname='tmux rename-session `basename $PWD`'
+alias mp='multipass'
+alias cl='clear'
+alias cla='clear &&'
+alias dps='docker ps'
+alias cm='chezmoi'
+
+# chruby ruby-2.7.6
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+nvm use v16
+
+export PATH=$PATH:~/.local/bin
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
+
+# For running canvas in docker
+export CANVAS_SKIP_DOCKER_USERMOD=1
 
 # Set up rbenv
 export PATH="$HOME/.rbenv/bin:/home/jeff/.rbenv/shims:${PATH}"
