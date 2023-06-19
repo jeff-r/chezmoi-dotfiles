@@ -172,22 +172,22 @@ export PATH="/usr/local/heroku/bin:$PATH"
 export CANVAS_SKIP_DOCKER_USERMOD=1
 
 # Set up rbenv
-export PATH="$HOME/.rbenv/bin:/home/jeff/.rbenv/shims:${PATH}"
-export RBENV_SHELL=zsh
-source '/home/jeff/.rbenv/libexec/../completions/rbenv.zsh'
-command rbenv rehash 2>/dev/null
-rbenv() {
-  local command
-  command="${1:-}"
-  if [ "$#" -gt 0 ]; then
-    shift
-  fi
-
-  case "$command" in
-  rehash|shell|update|use)
-    eval "$(rbenv "sh-$command" "$@")";;
-  *)
-    command rbenv "$command" "$@";;
-  esac
-}
+#export PATH="$HOME/.rbenv/bin:/home/jeff/.rbenv/shims:${PATH}"
+#export RBENV_SHELL=zsh
+#source '/home/jeff/.rbenv/libexec/../completions/rbenv.zsh'
+#command rbenv rehash 2>/dev/null
+#rbenv() {
+#  local command
+#  command="${1:-}"
+#  if [ "$#" -gt 0 ]; then
+#    shift
+#  fi
+#
+#  case "$command" in
+#  rehash|shell|update|use)
+#    eval "$(rbenv "sh-$command" "$@")";;
+#  *)
+#    command rbenv "$command" "$@";;
+#  esac
+#}
 
