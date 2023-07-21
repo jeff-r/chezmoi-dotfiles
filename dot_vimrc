@@ -32,9 +32,11 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'godlygeek/tabular'
 Plug 'easymotion/vim-easymotion'
 Plug 'mattn/emmet-vim'
-Plug '/usr/sbin/fzf'
+" Plug '/usr/sbin/fzf'
 Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf'
 Plug 'vimwiki/vimwiki'
+Plug 'kchmck/vim-coffee-script'
 
 " Plug 'w0rp/ale'
 call plug#end()
@@ -47,6 +49,23 @@ call plug#end()
 " keybindings
 "   * ctrlp
 "
+
+
+let mapleader = " "
+let maplocalleader = " "
+
+
+" Yank to clipboard
+noremap <Leader>Y "+y"
+noremap <Leader>z "+y"
+
+set mouse=a
+
+
+nnoremap <leader>n :call NextColor(1)<CR>
+nnoremap <leader>b :call NextColor(-1)<CR>
+
+map <LocalLeader>s :w<CR>
 
 " markdown
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
@@ -75,7 +94,7 @@ set shiftwidth=2                            " number of spaces inserted per leve
 set incsearch                               " incremental searching
 " set cursorline                              " highlight screen line of the cursor
 set scrolloff=3                             " always show 3 lines above/below cursor line
-set nonumber                                  " display line numbers
+set number                                  " display line numbers
 set showmatch                               " briefly displays matching bracket
 set wildmode=longest,list                   " shell-like file completion
 set wildignore=sharedfs/*                   " filter sharedfs out of command-t
@@ -121,10 +140,22 @@ set background=light
 
 " light
 " colorscheme delek
+" colo soeul255_
+
+" let g:seoul256_current_bg = 256
+" let g:seoul256_current_fg = 1
+" colo seoul256-light
+
+let g:seoul256_background = 256
+colo seoul256
 
 " vim helpers
+map <Leader>m :set number!<CR>
+map <Leader>p :set paste!<CR>
 map ,m :set number!<CR>
 map ,p :set paste!<CR>
+
+" ":au FocusLost * :wa
 
 augroup myvimrchooks
   au!
@@ -141,8 +172,12 @@ map ,s :call RunNearestSpec()<CR>
 map ,l :call RunLastSpec()<CR>
 
 " configure ack
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
 let g:AckAllFiles = 0
-let g:AckCmd = 'ack --type-add ruby=.feature --ignore-dir=tmp 2> /dev/null'
+" let g:AckCmd = 'ack --type-add ruby=.feature --ignore-dir=tmp 2> /dev/null'
 map <LocalLeader>aw :Ack '<C-R><C-W>'
 
 " hash rocket
@@ -150,12 +185,13 @@ imap <C-L> <SPACE>=><SPACE>
 
 " FZF
 map <c-t> :FZF<cr>
+nmap <leader><tab> <plug>(fzf-maps-n)
 
 " retag
 map <silent> <LocalLeader>rt :!ctags -R --exclude=".git\|.svn\|log\|tmp\|db\|pkg" --extra=+f<CR>
 
 " NERD Tree
-map <silent> <LocalLeader>nt :NERDTreeToggle<CR>
+map <silent> <LocalLeader>t :NERDTreeToggle<CR>
 map <silent> <c-\> :NERDTreeToggle<CR>
 map <silent> <LocalLeader>nr :NERDTree<CR>
 map <silent> <LocalLeader>nf :NERDTreeFind<CR>

@@ -129,6 +129,12 @@ require('lazy').setup({
     },
   },
 
+	-- {
+	-- 	"folke/tokyonight.nvim",
+	-- 	lazy = true,
+	-- 	opts = { style = "moon" },
+	-- },
+
   {
     -- Theme inspired by Atom
     'navarasu/onedark.nvim',
@@ -149,17 +155,6 @@ require('lazy').setup({
         component_separators = '|',
         section_separators = '',
       },
-    },
-  },
-
-  {
-    -- Add indentation guides even on blank lines
-    'lukas-reineke/indent-blankline.nvim',
-    -- Enable `lukas-reineke/indent-blankline.nvim`
-    -- See `:help indent_blankline.txt`
-    opts = {
-      char = '┊',
-      show_trailing_blankline_indent = false,
     },
   },
 
@@ -191,6 +186,45 @@ require('lazy').setup({
     build = ':TSUpdate',
   },
 
+  'MunifTanjim/nui.nvim',
+  -- 'rmagatti/auto-spession',
+
+	{
+		"gennaro-tedesco/nvim-possession",
+		dependencies = {
+			"ibhagwan/fzf-lua",
+		},
+		config = true,
+		init = function()
+			local possession = require("nvim-possession")
+			vim.keymap.set("n", "<leader>sl", function()
+				possession.list()
+			end)
+			vim.keymap.set("n", "<leader>sn", function()
+				possession.new()
+			end)
+			vim.keymap.set("n", "<leader>su", function()
+				possession.update()
+			end)
+			vim.keymap.set("n", "<leader>sd", function()
+				possession.delete()
+			end)
+		end,
+    autosave = {
+      current = true,  -- or fun(name): boolean
+      tmp = true,  -- or fun(): boolean
+      tmp_name = 'tmp', -- or fun(): string
+      on_load = true,
+      on_quit = true,
+    },
+	},
+
+  'kchmck/vim-coffee-script',
+
+	-- require("gennaro-tedesco/nvim-possession").setup({
+	-- 	autoload = true -- default false
+	-- })
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -204,7 +238,62 @@ require('lazy').setup({
   --
   --    For additional information see: https://github.com/folke/lazy.nvim#-structuring-your-plugins
   -- { import = 'custom.plugins' },
+
+  'nvim-tree/nvim-web-devicons',
+
+  {
+    "nvim-tree/nvim-tree.lua",
+    version = "*",
+    lazy = false,
+    -- dependencies = {
+    --   "nvim-tree/nvim-web-devicons",
+    -- },
+    config = function()
+      require("nvim-tree").setup {}
+    end,
+  },
+
+  'dcampos/nvim-snippy',
+  'honza/vim-snippets'
+
+
 }, {})
+
+require('snippy').setup({
+    mappings = {
+        is = {
+            ['<Tab>'] = 'expand_or_advance',
+            ['<S-Tab>'] = 'previous',
+        },
+        nx = {
+            ['<leader>x'] = 'cut_text',
+        },
+    },
+})
+
+-- local function my_on_attach(bufnr)
+--   local api = require "nvim-tree.api"
+-- 
+--   local function opts(desc)
+--     return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+--   end
+-- 
+--   -- default mappings
+--   api.config.mappings.default_on_attach(bufnr)
+-- 
+--   -- custom mappings
+--   vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent,        opts('Up'))
+--   vim.keymap.set('n', '?',     api.tree.toggle_help,                  opts('Help'))
+-- end
+-- 
+-- require("nvim-tree").setup {
+--   on_attach = my_on_attach,
+-- }
+
+-- jr
+vim.keymap.set('n', '<leader>t', ':NvimTreeToggle<cr>')
+
+
 
 -- [[ Setting options ]]
 -- See `:help vim.o`
@@ -280,6 +369,12 @@ require('telescope').setup {
       },
     },
   },
+  pickers = {
+    buffers = {
+      -- https://github.com/nvim-telescope/telescope.nvim/issues/179
+      sort_lastused = true
+    }
+  }
 }
 
 -- Enable telescope fzf native, if installed
@@ -380,12 +475,6 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- [[ Configure LSP ]]
 --  This function gets run when an LSP connects to a particular buffer.
 local on_attach = function(_, bufnr)
-  -- NOTE: Remember that lua is a real programming language, and as such it is possible
-  -- to define small helper and utility functions so you don't have to repeat yourself
-  -- many times.
-  --
-  -- In this case, we create a function that lets us more easily define mappings specific
-  -- for LSP related items. It sets the mode, buffer and description for us each time.
   local nmap = function(keys, func, desc)
     if desc then
       desc = 'LSP: ' .. desc
@@ -434,6 +523,22 @@ local servers = {
   -- rust_analyzer = {},
   -- tsserver = {},
 
+  -- solargraph = {
+  --   cmd = { os.getenv( "HOME" ) .. "/.rbenv/shims/solargraph", 'stdio' },
+  --   root_dir = nvim_lsp.util.root_pattern("Gemfile", ".git", "."),
+  --   settings = {
+  --     solargraph = {
+  --       autoformat = true,
+  --       completion = true,
+  --       diagnostic = true,
+  --       folding = true,
+  --       references = true,
+  --       rename = true,
+  --       symbols = true
+  --     }
+  --   }
+  -- },
+
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
@@ -466,55 +571,17 @@ mason_lspconfig.setup_handlers {
   end,
 }
 
--- [[ Configure nvim-cmp ]]
--- See `:help cmp`
-local cmp = require 'cmp'
-local luasnip = require 'luasnip'
-require('luasnip.loaders.from_vscode').lazy_load()
-luasnip.config.setup {}
-
-cmp.setup {
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  mapping = cmp.mapping.preset.insert {
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete {},
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_locally_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.locally_jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-  },
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-  },
-}
 
 vim.keymap.set('n', ';', ':')
+-- vim.keymap.set('n', '<leader>t', 'NERDTree')
+vim.g.tags = './tags'
+vim.keymap.set('n', '<leader>v', ':w<cr>')
+vim.keymap.set('n', '<c-l>', '<c-w>l')
+vim.keymap.set('n', '<c-h>', '<c-w>h')
+vim.keymap.set('n', '<c-k>', '<c-w>k')
+vim.keymap.set('n', '<c-j>', '<c-w>j')
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
+
+
