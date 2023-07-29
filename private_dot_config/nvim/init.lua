@@ -72,6 +72,12 @@ require('lazy').setup({
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
 
+  -- Underline matches to the word under the cursor
+  'itchyny/vim-cursorword',
+
+  -- Move windows around
+  'sindrets/winshift.nvim',
+
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
   {
@@ -135,14 +141,32 @@ require('lazy').setup({
 	-- 	opts = { style = "moon" },
 	-- },
 
+  -- {
+  --   -- Theme inspired by Atom
+  --   'navarasu/onedark.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     vim.cmd.colorscheme 'onedark'
+  --   end,
+  -- },
+
+  'sainnhe/edge',
+  'Th3Whit3Wolf/one-nvim',
+
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
-    priority = 1000,
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate',
     config = function()
-      vim.cmd.colorscheme 'onedark'
+      require'nvim-treesitter.configs'.setup {
+        highlight = {
+          enable = true,
+        }
+      }
     end,
   },
+
+
+
 
   {
     -- Set lualine as statusline
@@ -273,26 +297,26 @@ require('snippy').setup({
 
 -- local function my_on_attach(bufnr)
 --   local api = require "nvim-tree.api"
--- 
+--
 --   local function opts(desc)
 --     return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
 --   end
--- 
+--
 --   -- default mappings
 --   api.config.mappings.default_on_attach(bufnr)
--- 
+--
 --   -- custom mappings
 --   vim.keymap.set('n', '<C-t>', api.tree.change_root_to_parent,        opts('Up'))
 --   vim.keymap.set('n', '?',     api.tree.toggle_help,                  opts('Help'))
 -- end
--- 
+--
 -- require("nvim-tree").setup {
 --   on_attach = my_on_attach,
 -- }
 
 -- jr
 vim.keymap.set('n', '<leader>t', ':NvimTreeToggle<cr>')
-
+vim.keymap.set('n', '<C-W>m', ':WinShift<CR>')
 
 
 -- [[ Setting options ]]
@@ -584,4 +608,11 @@ vim.keymap.set('n', '<c-j>', '<c-w>j')
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
+-- Autoremove trailing spaces
+vim.api.nvim_create_autocmd({ "BufWritePre" }, {
+  pattern = { "*" },
+  command = [[%s/\s\+$//e]],
+})
 
+vim.o.background = 'light'
+vim.cmd [[colorscheme one-nvim]]
