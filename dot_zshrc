@@ -192,3 +192,4 @@ export CANVAS_SKIP_DOCKER_USERMOD=1
 #  esac
 #}
 
+export TERM=tmux-256color
