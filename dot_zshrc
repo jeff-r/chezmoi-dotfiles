@@ -192,3 +192,10 @@ export CANVAS_SKIP_DOCKER_USERMOD=1
 #  esac
 #}
 
+export TERM=tmux-256color
+
+# Stop ctrl-s from freezing the terminal
+if [[ -t 0 && $- = *i* ]]
+then
+    stty -ixon
+fi
