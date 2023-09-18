@@ -702,5 +702,5 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 	command = [[%s/\s\+$//e]],
 })
 
-vim.o.background = 'light'
-vim.cmd [[colorscheme one-nvim]]
+vim.o.background = 'dark'
+-- vim.cmd [[colorscheme one-nvim]]
