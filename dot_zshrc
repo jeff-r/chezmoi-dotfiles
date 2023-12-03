@@ -157,12 +157,14 @@ alias cla='clear &&'
 alias dps='docker ps'
 alias cm='chezmoi'
 alias vim='nvim'
+alias dcm='docker-compose'
+alias dc='docker-compose'
 
 # chruby ruby-2.7.6
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
-nvm use v16
+nvm use v18.8
 
 export PATH=$PATH:~/.local/bin
 
@@ -199,3 +201,10 @@ if [[ -t 0 && $- = *i* ]]
 then
     stty -ixon
 fi
+
+if [ -f ~/.zshrc.private ]; then
+    source ~/.zshrc.private
+else
+    print "404: ~/.zshrc.private not found."
+fi
+

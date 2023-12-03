@@ -431,13 +431,13 @@ vim.keymap.set('n', '<leader>gs', require('telescope.builtin').git_status, { des
 
 vim.keymap.set('n', '<leader>ld', require('telescope.builtin').lsp_definitions, { desc = 'LSP definitions' })
 vim.keymap.set('n', '<leader>lr', require('telescope.builtin').lsp_references, { desc = 'LSP references' })
+vim.keymap.set('n', '<leader>li', require('telescope.builtin').lsp_incoming_calls, { desc = 'LSP references' })
 vim.keymap.set('n', '<leader>ls', require('telescope.builtin').lsp_document_symbols, { desc = 'LSP symbols - document' })
 vim.keymap.set('n', '<leader>lw', require('telescope.builtin').lsp_workspace_symbols, { desc = 'LSP symbols - workspace' })
 
 vim.keymap.set('n', '<leader>sa', require('telescope.builtin').tags, { desc = 'Search tags' })
 vim.keymap.set('n', '<leader>sb', require('telescope.builtin').builtin, { desc = 'Search builtins' })
-vim.keymap.set('n', '<leader>sc', require('telescope.builtin').current_buffer_fuzzy_find,
-	{ desc = '[S]earch current [C]urrent_buffer_fuzzy_find' })
+vim.keymap.set('n', '<leader>sc', require('telescope.builtin').current_buffer_fuzzy_find, { desc = '[S]earch current [C]urrent_buffer_fuzzy_find' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = 'Search diagnostics' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = 'Search files' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = 'Search grep' })
@@ -451,6 +451,7 @@ vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { de
 
 vim.keymap.set('n', '<leader>co', require('telescope.builtin').commands, { desc = 'Vim: commands' })
 vim.keymap.set('n', '<leader>vh', require('telescope.builtin').help_tags, { desc = 'Vim: help' })
+vim.keymap.set('n', '<leader>vc', require('telescope.builtin').colorscheme, { desc = 'Vim: colorschemes' })
 vim.keymap.set('n', '<leader>vk', require('telescope.builtin').keymaps, { desc = 'Vim: keymaps' })
 vim.keymap.set('n', '<leader>vp', require('telescope.builtin').pickers, { desc = 'Vim: pickers' })
 vim.keymap.set('n', '<leader>vv', require('telescope.builtin').vim_options, { desc = 'Vim: vim options' })
@@ -702,5 +703,8 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 	command = [[%s/\s\+$//e]],
 })
 
-vim.o.background = 'light'
-vim.cmd [[colorscheme one-nvim]]
+-- vim.o.background = 'light'
+-- vim.cmd [[colorscheme one-nvim]]
+
+vim.o.background = 'dark'
+vim.cmd [[colorscheme slate]]
