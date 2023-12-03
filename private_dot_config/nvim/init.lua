@@ -437,7 +437,9 @@ vim.keymap.set('n', '<leader>lw', require('telescope.builtin').lsp_workspace_sym
 
 vim.keymap.set('n', '<leader>sa', require('telescope.builtin').tags, { desc = 'Search tags' })
 vim.keymap.set('n', '<leader>sb', require('telescope.builtin').builtin, { desc = 'Search builtins' })
+
 vim.keymap.set('n', '<leader>sc', require('telescope.builtin').current_buffer_fuzzy_find, { desc = '[S]earch current [C]urrent_buffer_fuzzy_find' })
+
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = 'Search diagnostics' })
 vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = 'Search files' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = 'Search grep' })
@@ -708,3 +710,4 @@ vim.api.nvim_create_autocmd({ "BufWritePre" }, {
 
 vim.o.background = 'dark'
 vim.cmd [[colorscheme slate]]
+-- vim.cmd [[colorscheme one-nvim]]
